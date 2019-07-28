@@ -1,4 +1,4 @@
-= Vert.x Maven Starter
+= Vert.x Troubleshooting
 
 This project is a template to start your own Vert.x project using Apache Maven.
 
@@ -7,34 +7,25 @@ This project is a template to start your own Vert.x project using Apache Maven.
 * Apache Maven
 * JDK 8+
 
-== Getting started
+== WebClient vs. HttpClient
 
-Create your project with:
-
-[source]
-----
-git clone https://github.com/vert-x3/vertx-maven-starter.git PROJECT_NAME
-----
-
-Replace `PROJECT_NAME` with the name of your project.
-
-On Linux and MacOSx (or Windows with `bash`), if you want to go faster and generate an already configured project run:
+This project is for troubleshooting the differences between Vert.x's WebClient and HttpClient.
 
 [source]
 ----
-curl http://vertx.io/assets/starter-scripts/create-vertx-project-maven.sh -o vertx-create-maven-project.sh; bash vertx-create-maven-project.sh
+git clone https://github.com/jeremyrdavis/vertx-troubleshooting.git
 ----
 
 == Running the project
 
-Once you have retrieved the project, you can check that everything works with:
+Once you have retrieved the project, you can check that everything works (it doesn't work at the moment) with:
 
 [source]
 ----
 mvn test exec:java
 ----
 
-The command compiles the project and runs the tests, then  it launches the application, so you can check by yourself. Open your browser to http://localhost:8080. You should see a _Hello World_ message.
+The command compiles the project and runs the tests, which fail at the moment.
 
 == Anatomy of the project
 
@@ -44,20 +35,12 @@ The project contains:
 * a _main_ verticle file (src/main/java/io/vertx/starter/MainVerticle.java)
 * an unit test (src/main/test/io/vertx/starter/MainVerticleTest.java)
 
-== Start to hack
+=== MainVerticle
 
-1. Delete the `.git` directory
-2. Open the `pom.xml` file and customize the `groupId`, `artifactId` and `version`. You can also change the `main.verticle` property to use your own package name and verticle class.
-3. Run `redeploy.sh` (or `redeploy.bat` on Windows) and the project recompiles while editing.
+MainVerticle creates an HttpServer and resturns, "Hello, Vert.x!"
 
-NOTE: the `redeploy` script are also configurable
+=== MainVerticleTest
 
-== Building the project
+MainVerticleTest contains 2 methods: testWithHttpClient and testWithWebClient.  Both deploy MainVerticle and then call the root url.
 
-To build the project, just use:
-
-----
-mvn clean package
-----
-
-It generates a _fat-jar_ in the `target` directory.
+The testWithWebClient works while the testWithHttpClient hangs and eventually times out.
